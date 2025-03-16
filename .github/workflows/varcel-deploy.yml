@@ -3,11 +3,12 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main  # Change to your branch name if needed
+      - main  # Change this if deploying from another branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -15,8 +16,8 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      - name: Authenticate Vercel
+      - name: Authenticate with Vercel
         run: vercel login --token ${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy Project
-        run: vercel --prod --yes --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
