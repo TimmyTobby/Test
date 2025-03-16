@@ -1,10 +1,12 @@
-from flask import Flask
+from fastapi import FastAPI
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route('/')
-def home():
-    return "Hello, DigitalOcean! This is a test deployment."
+@app.get("/")
+def read_root():
+    return {"message": "Deployment on Vercel successful!"}
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+# Additional route for testing
+@app.get("/status")
+def status():
+    return {"status": "App is running on Vercel!"}
