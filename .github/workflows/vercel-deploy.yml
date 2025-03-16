@@ -3,7 +3,7 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main  # Adjust if deploying from another branch
+      - main
 
 jobs:
   deploy:
@@ -13,13 +13,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel jq
+      - name: Install Dependencies (jq, Vercel CLI)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          npm install -g vercel
 
       - name: Create Vercel Project if Not Exists
         id: create_project
         run: |
-          PROJECT_NAME="my-vercel-project"
+          PROJECT_NAME="my-vercel-project-new"
           RESPONSE=$(curl -s -X POST "https://api.vercel.com/v9/projects" \
           -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
           -H "Content-Type: application/json" \
@@ -32,21 +35,21 @@ jobs:
           }')
 
           PROJECT_ID=$(echo $RESPONSE | jq -r '.id')
-          
+
           if [ "$PROJECT_ID" == "null" ]; then
-            echo "❌ Project already exists or creation failed."
+            echo "❌ Project creation failed. Trying to fetch existing project..."
             RESPONSE=$(curl -s -X GET "https://api.vercel.com/v9/projects" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json")
 
             PROJECT_ID=$(echo $RESPONSE | jq -r ".projects[] | select(.name==\"$PROJECT_NAME\") | .id")
           fi
-          
+
           if [ "$PROJECT_ID" == "null" ]; then
             echo "❌ Failed to create or retrieve project ID."
             exit 1
           fi
-          
+
           echo "PROJECT_ID=$PROJECT_ID" >> $GITHUB_ENV
           echo "✅ Vercel Project ID: $PROJECT_ID"
 
@@ -58,4 +61,4 @@ jobs:
                -d '{"gitRepository": {"type": "github", "repo": "Test", "org": "TimmyTobby"}}'
 
       - name: Deploy to Vercel
-        run: vercel --prod --yes --token ${{ secrets.VERCEL_TOKEN }} 
+        run: vercel --prod --yes --token ${{ secrets.VERCEL_TOKEN }}
