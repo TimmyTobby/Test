@@ -5,7 +5,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Deployment on Vercel successful! This is Version 2, Testing the V2 now!!!"}
+    return {"message": "Deployment on Vercel successful! This is Version 3, Testing the V3 now!!!"}
 
 @app.get("/status")
 def status():
