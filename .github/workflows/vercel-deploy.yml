@@ -22,7 +22,7 @@ jobs:
       - name: Create Vercel Project if Not Exists
         id: create_project
         run: |
-          PROJECT_NAME="my-vercel-project-new"
+          PROJECT_NAME="myvercelprojectnew"
           RESPONSE=$(curl -s -X POST "https://api.vercel.com/v9/projects" \
           -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
           -H "Content-Type: application/json" \
