@@ -18,7 +18,7 @@ RUN poetry install --no-interaction --no-ansi --no-root
 # Copy app code
 COPY  ./api ./api
 
-RUN poetry install --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi --no-root
 
 # Expose port (Railway will override this)
 EXPOSE 8000
