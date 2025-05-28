@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Deployment on Railway successful! This is Version 4, Testing the V3 now!!!"}
+    return {"message": "Deployment on Railway successful! This is Version 4, Testing the V4 now!!!, running on Railway!"}
 
 @app.get("/status")
 def status():
